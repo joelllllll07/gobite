@@ -10,18 +10,43 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ExploreRouteImport } from './routes/explore'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AssistantRouteImport } from './routes/assistant'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PlacePlaceIdRouteImport } from './routes/place.$placeId'
 import { Route as ApiPhotoRouteImport } from './routes/api/photo'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
+import { Route as AuthenticatedCompareRouteImport } from './routes/_authenticated/compare'
 
 const ExploreRoute = ExploreRouteImport.update({
   id: '/explore',
   path: '/explore',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssistantRoute = AssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlacePlaceIdRoute = PlacePlaceIdRouteImport.update({
+  id: '/place/$placeId',
+  path: '/place/$placeId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPhotoRoute = ApiPhotoRouteImport.update({
@@ -34,39 +59,98 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedSavedRoute = AuthenticatedSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCompareRoute = AuthenticatedCompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/assistant': typeof AssistantRoute
+  '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
+  '/compare': typeof AuthenticatedCompareRoute
+  '/saved': typeof AuthenticatedSavedRoute
   '/api/chat': typeof ApiChatRoute
   '/api/photo': typeof ApiPhotoRoute
+  '/place/$placeId': typeof PlacePlaceIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/assistant': typeof AssistantRoute
+  '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
+  '/compare': typeof AuthenticatedCompareRoute
+  '/saved': typeof AuthenticatedSavedRoute
   '/api/chat': typeof ApiChatRoute
   '/api/photo': typeof ApiPhotoRoute
+  '/place/$placeId': typeof PlacePlaceIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/assistant': typeof AssistantRoute
+  '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
+  '/_authenticated/compare': typeof AuthenticatedCompareRoute
+  '/_authenticated/saved': typeof AuthenticatedSavedRoute
   '/api/chat': typeof ApiChatRoute
   '/api/photo': typeof ApiPhotoRoute
+  '/place/$placeId': typeof PlacePlaceIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/explore' | '/api/chat' | '/api/photo'
+  fullPaths:
+    | '/'
+    | '/assistant'
+    | '/auth'
+    | '/explore'
+    | '/compare'
+    | '/saved'
+    | '/api/chat'
+    | '/api/photo'
+    | '/place/$placeId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/explore' | '/api/chat' | '/api/photo'
-  id: '__root__' | '/' | '/explore' | '/api/chat' | '/api/photo'
+  to:
+    | '/'
+    | '/assistant'
+    | '/auth'
+    | '/explore'
+    | '/compare'
+    | '/saved'
+    | '/api/chat'
+    | '/api/photo'
+    | '/place/$placeId'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/assistant'
+    | '/auth'
+    | '/explore'
+    | '/_authenticated/compare'
+    | '/_authenticated/saved'
+    | '/api/chat'
+    | '/api/photo'
+    | '/place/$placeId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AssistantRoute: typeof AssistantRoute
+  AuthRoute: typeof AuthRoute
   ExploreRoute: typeof ExploreRoute
   ApiChatRoute: typeof ApiChatRoute
   ApiPhotoRoute: typeof ApiPhotoRoute
+  PlacePlaceIdRoute: typeof PlacePlaceIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -78,11 +162,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExploreRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assistant': {
+      id: '/assistant'
+      path: '/assistant'
+      fullPath: '/assistant'
+      preLoaderRoute: typeof AssistantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/place/$placeId': {
+      id: '/place/$placeId'
+      path: '/place/$placeId'
+      fullPath: '/place/$placeId'
+      preLoaderRoute: typeof PlacePlaceIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/photo': {
@@ -99,14 +211,45 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/saved': {
+      id: '/_authenticated/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof AuthenticatedSavedRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/compare': {
+      id: '/_authenticated/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof AuthenticatedCompareRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedCompareRoute: typeof AuthenticatedCompareRoute
+  AuthenticatedSavedRoute: typeof AuthenticatedSavedRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedCompareRoute: AuthenticatedCompareRoute,
+  AuthenticatedSavedRoute: AuthenticatedSavedRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AssistantRoute: AssistantRoute,
+  AuthRoute: AuthRoute,
   ExploreRoute: ExploreRoute,
   ApiChatRoute: ApiChatRoute,
   ApiPhotoRoute: ApiPhotoRoute,
+  PlacePlaceIdRoute: PlacePlaceIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
