@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiPhotoRouteImport } from './routes/api/photo'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,36 +37,47 @@ const ApiChatRoute = ApiChatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/explore': typeof ExploreRoute
   '/api/chat': typeof ApiChatRoute
   '/api/photo': typeof ApiPhotoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/explore': typeof ExploreRoute
   '/api/chat': typeof ApiChatRoute
   '/api/photo': typeof ApiPhotoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/explore': typeof ExploreRoute
   '/api/chat': typeof ApiChatRoute
   '/api/photo': typeof ApiPhotoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/chat' | '/api/photo'
+  fullPaths: '/' | '/explore' | '/api/chat' | '/api/photo'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/chat' | '/api/photo'
-  id: '__root__' | '/' | '/api/chat' | '/api/photo'
+  to: '/' | '/explore' | '/api/chat' | '/api/photo'
+  id: '__root__' | '/' | '/explore' | '/api/chat' | '/api/photo'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExploreRoute: typeof ExploreRoute
   ApiChatRoute: typeof ApiChatRoute
   ApiPhotoRoute: typeof ApiPhotoRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExploreRoute: ExploreRoute,
   ApiChatRoute: ApiChatRoute,
   ApiPhotoRoute: ApiPhotoRoute,
 }
