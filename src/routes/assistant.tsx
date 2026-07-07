@@ -113,10 +113,10 @@ function AssistantPage() {
                           </div>
                         );
                       }
-                      if (part.type === "tool-invocation" && part.toolInvocation.state === "result") {
-                        const result = part.toolInvocation.result as { places?: PlaceSummary[] };
-                        if (result?.places?.length) {
-                          return <PlaceList key={i} places={result.places.slice(0, 5)} />;
+                      if (part.type.startsWith("tool-") && "state" in part && part.state === "output-available") {
+                        const output = (part as unknown as { output?: { places?: PlaceSummary[] } }).output;
+                        if (output?.places?.length) {
+                          return <PlaceList key={i} places={output.places.slice(0, 5)} />;
                         }
                       }
                       return null;
