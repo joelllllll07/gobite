@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AssistantRouteImport } from './routes/assistant'
@@ -20,6 +21,11 @@ import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
 import { Route as AuthenticatedCompareRouteImport } from './routes/_authenticated/compare'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExploreRoute = ExploreRouteImport.update({
   id: '/explore',
   path: '/explore',
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/assistant': typeof AssistantRoute
   '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/compare': typeof AuthenticatedCompareRoute
   '/saved': typeof AuthenticatedSavedRoute
   '/api/chat': typeof ApiChatRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByTo {
   '/assistant': typeof AssistantRoute
   '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/compare': typeof AuthenticatedCompareRoute
   '/saved': typeof AuthenticatedSavedRoute
   '/api/chat': typeof ApiChatRoute
@@ -99,6 +107,7 @@ export interface FileRoutesById {
   '/assistant': typeof AssistantRoute
   '/auth': typeof AuthRoute
   '/explore': typeof ExploreRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/compare': typeof AuthenticatedCompareRoute
   '/_authenticated/saved': typeof AuthenticatedSavedRoute
   '/api/chat': typeof ApiChatRoute
@@ -112,6 +121,7 @@ export interface FileRouteTypes {
     | '/assistant'
     | '/auth'
     | '/explore'
+    | '/sitemap.xml'
     | '/compare'
     | '/saved'
     | '/api/chat'
@@ -123,6 +133,7 @@ export interface FileRouteTypes {
     | '/assistant'
     | '/auth'
     | '/explore'
+    | '/sitemap.xml'
     | '/compare'
     | '/saved'
     | '/api/chat'
@@ -135,6 +146,7 @@ export interface FileRouteTypes {
     | '/assistant'
     | '/auth'
     | '/explore'
+    | '/sitemap.xml'
     | '/_authenticated/compare'
     | '/_authenticated/saved'
     | '/api/chat'
@@ -148,6 +160,7 @@ export interface RootRouteChildren {
   AssistantRoute: typeof AssistantRoute
   AuthRoute: typeof AuthRoute
   ExploreRoute: typeof ExploreRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ApiChatRoute: typeof ApiChatRoute
   ApiPhotoRoute: typeof ApiPhotoRoute
   PlacePlaceIdRoute: typeof PlacePlaceIdRoute
@@ -155,6 +168,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/explore': {
       id: '/explore'
       path: '/explore'
@@ -247,6 +267,7 @@ const rootRouteChildren: RootRouteChildren = {
   AssistantRoute: AssistantRoute,
   AuthRoute: AuthRoute,
   ExploreRoute: ExploreRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   ApiChatRoute: ApiChatRoute,
   ApiPhotoRoute: ApiPhotoRoute,
   PlacePlaceIdRoute: PlacePlaceIdRoute,
