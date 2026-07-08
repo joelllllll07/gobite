@@ -16,8 +16,8 @@ function loadMaps(): Promise<void> {
   if (scriptLoading) return scriptLoading;
 
   scriptLoading = new Promise<void>((resolve, reject) => {
-    const key = import.meta.env.VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY as string;
-    const channel = import.meta.env.VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_TRACKING_ID as string;
+    const key = import.meta.env.VITE_GOOGLE_MAPS_BROWSER_KEY as string;
+    const channel = import.meta.env.VITE_GOOGLE_MAPS_TRACKING_ID as string;
     if (!key) return reject(new Error("Missing Google Maps browser key"));
     window.__gobiteMapInit = () => resolve();
     const s = document.createElement("script");
