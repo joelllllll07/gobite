@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { convertToModelMessages, streamText, tool, stepCountIs, type UIMessage } from "ai";
 import { z } from "zod";
-import { createLovableAiGatewayProvider } from "@/lib/ai-gateway.server";
+import { createGeminiProvider } from "@/lib/ai-gateway.server";
 import { searchNearby, searchText } from "@/lib/google-maps.server";
 
 const SYSTEM = `You are GoBite's helpful discovery assistant. You help users find nearby restaurants, cafés, bakeries, hotels and food places using ONLY officially available Google Maps Platform data.
@@ -22,10 +22,10 @@ export const Route = createFileRoute("/api/chat")({
           messages: UIMessage[];
           location?: { lat: number; lng: number } | null;
         };
-        const key = process.env.LOVABLE_API_KEY;
-        if (!key) return new Response("Missing LOVABLE_API_KEY", { status: 500 });
+        const key = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+        if (!key) return new Response("Missing GOOGLE_GENERATIVE_AI_API_KEY", { status: 500 });
 
-        const gateway = createLovableAiGatewayProvider(key);
+        const gateway = createGeminiProvider(key);
 
         const searchNearbyTool = tool({
           description:
@@ -87,7 +87,7 @@ export const Route = createFileRoute("/api/chat")({
         });
 
         const result = streamText({
-          model: gateway("google/gemini-2.5-flash"),
+          model: gateway("gemini-2.5-flash"),
           system: SYSTEM,
           messages: await convertToModelMessages(messages),
           tools: { searchNearby: searchNearbyTool, searchText: searchTextTool },
