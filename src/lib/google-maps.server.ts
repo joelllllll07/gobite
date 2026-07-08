@@ -1,14 +1,12 @@
-// Server-side helpers for Google Maps Platform via the Lovable connector gateway.
+// Server-side helpers for the Google Places API (New), called directly.
 
-const GATEWAY = "https://connector-gateway.lovable.dev/google_maps";
+const GATEWAY = "https://places.googleapis.com/v1";
 
 function authHeaders() {
-  const key = process.env.LOVABLE_API_KEY;
-  const conn = process.env.GOOGLE_MAPS_API_KEY;
-  if (!key || !conn) throw new Error("Google Maps connector not configured");
+  const key = process.env.GOOGLE_MAPS_API_KEY;
+  if (!key) throw new Error("GOOGLE_MAPS_API_KEY not configured");
   return {
-    Authorization: `Bearer ${key}`,
-    "X-Connection-Api-Key": conn,
+    "X-Goog-Api-Key": key,
     "Content-Type": "application/json",
   };
 }
@@ -118,7 +116,7 @@ export async function searchNearby(params: {
   };
   if (params.includedTypes?.length) body.includedTypes = params.includedTypes;
 
-  const res = await fetch(`${GATEWAY}/places/v1/places:searchNearby`, {
+  const res = await fetch(`${GATEWAY}/places:searchNearby`, {
     method: "POST",
     headers: { ...authHeaders(), "X-Goog-FieldMask": PLACE_FIELDS },
     body: JSON.stringify(body),
@@ -152,7 +150,7 @@ export async function searchText(params: {
     };
   }
 
-  const res = await fetch(`${GATEWAY}/places/v1/places:searchText`, {
+  const res = await fetch(`${GATEWAY}/places:searchText`, {
     method: "POST",
     headers: { ...authHeaders(), "X-Goog-FieldMask": PLACE_FIELDS },
     body: JSON.stringify(body),
@@ -171,7 +169,7 @@ export type PlaceDetails = PlaceSummary & {
 };
 
 export async function getPlaceDetails(placeId: string): Promise<PlaceDetails> {
-  const res = await fetch(`${GATEWAY}/places/v1/places/${encodeURIComponent(placeId)}`, {
+  const res = await fetch(`${GATEWAY}/places/${encodeURIComponent(placeId)}`, {
     method: "GET",
     headers: { ...authHeaders(), "X-Goog-FieldMask": DETAIL_FIELDS },
   });
@@ -193,7 +191,7 @@ export async function getPlaceDetails(placeId: string): Promise<PlaceDetails> {
 
 export async function fetchPhoto(name: string, maxWidth = 800): Promise<Response> {
   // name looks like "places/{placeId}/photos/{photoId}"
-  const url = `${GATEWAY}/places/v1/${name}/media?maxWidthPx=${maxWidth}&skipHttpRedirect=true`;
+  const url = `${GATEWAY}/${name}/media?maxWidthPx=${maxWidth}&skipHttpRedirect=true`;
   const res = await fetch(url, { headers: authHeaders() });
   return res;
 }
