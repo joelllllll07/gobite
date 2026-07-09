@@ -97,21 +97,6 @@ function AuthPage() {
             {mode === "signin" ? "Sign in to save and compare places." : "Save places, wishlists, and more."}
           </p>
 
-          <Button
-            variant="outline"
-            className="mt-6 w-full rounded-full"
-            onClick={onGoogle}
-            disabled={loading}
-          >
-            <svg viewBox="0 0 24 24" className="h-4 w-4 mr-2" aria-hidden="true">
-              <path fill="#EA4335" d="M12 10.2v3.9h5.4c-.2 1.5-1.7 4.3-5.4 4.3-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.1.8 3.8 1.5l2.6-2.5C16.6 3.9 14.5 3 12 3 6.9 3 2.8 7.1 2.8 12.1S6.9 21.2 12 21.2c7 0 9.3-4.9 9.3-8.9 0-.6-.1-1.1-.1-1.5H12z"/>
-            </svg>
-            Continue with Google
-          </Button>
-
-          <div className="my-4 flex items-center gap-3 text-xs text-muted-foreground">
-            <div className="flex-1 h-px bg-border" /> or <div className="flex-1 h-px bg-border" />
-          </div>
 
           <form onSubmit={onEmail} className="space-y-3">
             <div>
