@@ -123,10 +123,7 @@ export async function searchNearby(params: {
   });
  if (!res.ok) throw new Error(`Nearby search failed [${res.status}]: ${await res.text()}`);
 const data = (await res.json()) as { places?: Array<Record<string, unknown>> };
-console.log(
-  "[DEBUG searchNearby] first place raw photos field:",
-  JSON.stringify(data.places?.[0]?.photos ?? "NO PHOTOS FIELD AT ALL"),
-);
+
 return (data.places ?? []).map(mapPlace);
 }
 
