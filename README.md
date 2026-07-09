@@ -23,7 +23,3 @@ This project is built with a modern, high-performance web stack:
 - **Authentication & Database**: [Supabase](https://supabase.com/)
 - **External APIs**: Google Maps Platform (Places API New)
 
-## 🚀 Getting Started
-
-### Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
