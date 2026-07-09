@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { MapPin, Sparkles, Search, ArrowRight, Star, Shield, Zap } from "lucide-react";
 import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
+
 import { Button } from "@/components/ui/button";
 import { CATEGORIES } from "@/lib/gobite";
 import { useGeolocation } from "@/hooks/use-geolocation";
@@ -152,27 +152,7 @@ function Landing() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="mx-auto max-w-7xl px-6 py-14">
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center">Loved by food explorers</h2>
-        <div className="mt-10 grid md:grid-cols-3 gap-5">
-          {[
-            { name: "Ana P.", role: "Barcelona", quote: "Found a tiny bakery two blocks from my flat that I'd walked past a hundred times. GoBite is magical." },
-            { name: "Kenji R.", role: "Tokyo", quote: "The AI assistant is spot-on. I just typed 'quiet café for reading' and it delivered." },
-            { name: "Maya S.", role: "Nairobi", quote: "Booking a weekend trip and GoBite's hotel filters are so much cleaner than anything else." },
-          ].map((t) => (
-            <div key={t.name} className="rounded-2xl border border-border bg-card p-6 card-hover">
-              <div className="flex text-primary">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-primary" />
-                ))}
-              </div>
-              <p className="mt-3 text-sm leading-relaxed">{t.quote}</p>
-              <p className="mt-4 text-xs text-muted-foreground"><span className="font-semibold text-foreground">{t.name}</span> · {t.role}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+
 
       {/* FAQ */}
       <section className="mx-auto max-w-3xl px-6 py-14">
@@ -214,7 +194,7 @@ function Landing() {
         </div>
       </section>
 
-      <Footer />
+
     </div>
   );
 }
