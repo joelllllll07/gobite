@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { MapPin, Sparkles, Search, ArrowRight, Star, Shield, Zap } from "lucide-react";
+import { toast } from "sonner";
 import { Navbar } from "@/components/navbar";
 
 import { Button } from "@/components/ui/button";
@@ -16,8 +17,14 @@ function Landing() {
   const navigate = useNavigate();
   const { request, loading } = useGeolocation();
 
-  const useLocation = () => {
-    request();
+  const useLocation = async () => {
+    try {
+      await request();
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Couldn't get your location";
+      toast.error(`${message} — pick a city on the next page instead.`);
+    }
     navigate({ to: "/explore" });
   };
 
