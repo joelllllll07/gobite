@@ -20,24 +20,31 @@ export function useGeolocation() {
   }, []);
 
   const request = () => {
-    if (typeof navigator === "undefined" || !navigator.geolocation) {
-      setError("Geolocation not supported");
-      return;
-    }
-    setLoading(true);
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const c = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-        setCoords(c);
-        window.localStorage.setItem(KEY, JSON.stringify(c));
-        setLoading(false);
-      },
-      (err) => {
-        setError(err.message);
-        setLoading(false);
-      },
-      { enableHighAccuracy: true, timeout: 10000 },
-    );
+    return new Promise<{ lat: number; lng: number }>((resolve, reject) => {
+      if (typeof navigator === "undefined" || !navigator.geolocation) {
+        const msg = "Geolocation not supported";
+        setError(msg);
+        reject(new Error(msg));
+        return;
+      }
+      setError(null);
+      setLoading(true);
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const c = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+          setCoords(c);
+          window.localStorage.setItem(KEY, JSON.stringify(c));
+          setLoading(false);
+          resolve(c);
+        },
+        (err) => {
+          setError(err.message);
+          setLoading(false);
+          reject(err);
+        },
+        { enableHighAccuracy: true, timeout: 10000 },
+      );
+    });
   };
 
   const setManual = (c: { lat: number; lng: number }) => {
