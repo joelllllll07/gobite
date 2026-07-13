@@ -21,6 +21,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 import { useGeolocation } from "@/hooks/use-geolocation";
 import { nearbyPlaces, textPlaces } from "@/lib/places.functions";
 import { CATEGORIES, distanceKm as calcDist } from "@/lib/gobite";
@@ -51,6 +52,15 @@ function Explore() {
   const { q, category } = Route.useSearch();
   const navigate = useNavigate();
   const { coords, request, setManual, loading: geoLoading } = useGeolocation();
+  const useLocation = async () => {
+    try {
+      await request();
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Couldn't get your location";
+      toast.error(`${message} — try picking a city instead.`);
+    }
+  };
   const [radius, setRadius] = useState<number>(3000);
   const [selectedCat, setSelectedCat] = useState<string | undefined>(category);
   const [openNowOnly, setOpenNowOnly] = useState(false);
@@ -221,7 +231,7 @@ function Explore() {
 
       <main className="mx-auto max-w-7xl w-full px-4 sm:px-6 py-6 flex-1">
         {!coords ? (
-          <LocationPrompt onUse={request} onManual={setManual} loading={geoLoading} />
+          <LocationPrompt onUse={useLocation} onManual={setManual} loading={geoLoading} />
         ) : view === "map" ? (
           <div className="grid md:grid-cols-[1fr_380px] gap-4">
             <PlaceMap
